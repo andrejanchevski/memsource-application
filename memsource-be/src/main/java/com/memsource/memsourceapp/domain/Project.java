@@ -1,12 +1,20 @@
 package com.memsource.memsourceapp.domain;
 
 import com.memsource.memsourceapp.enums.ProjectStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "projects")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
 public class Project {
 
     @Id
