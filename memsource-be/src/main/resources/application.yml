@@ -11,3 +11,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
+sample:
+  client:
+    url: https://cloud.memsource.com/web/api2/v1
