@@ -14,5 +14,5 @@ create table scheduled_executions(
     date_started timestamp with time zone not null,
     date_finished timestamp with time zone,
     is_started boolean,
-    is_finished boolean
+    is_completed boolean
 );
