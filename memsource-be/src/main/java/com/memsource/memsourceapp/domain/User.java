@@ -21,6 +21,16 @@ public class User {
     @Column(name = "user_name")
     private String userName;
     private String password;
+
+    @Column(name = "is_active")
+    private Boolean isActive;
+
+    @Column(name = "is_expired")
+    private Boolean isExpired;
+
+    @Column(name = "is_locked")
+    private Boolean isLocked;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),

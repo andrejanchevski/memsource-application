@@ -6,6 +6,7 @@ import com.memsource.memsourceapp.repository.UserRepository;
 import com.memsource.memsourceapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,10 +17,12 @@ import javax.transaction.Transactional;
 @Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User saveUser(User user) {
         log.info("Saving new user user=[{}]", user.toString());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
