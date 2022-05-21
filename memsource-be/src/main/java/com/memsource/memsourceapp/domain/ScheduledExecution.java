@@ -1,5 +1,6 @@
 package com.memsource.memsourceapp.domain;
 
+import com.memsource.memsourceapp.enums.ScheduledExecutionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @Data
 @Builder
-public class ScheduledExecutions {
+public class ScheduledExecution {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,5 +31,12 @@ public class ScheduledExecutions {
 
     @Column(name = "is_completed")
     private Boolean isCompleted;
+
+    @Column(name = "error_message")
+    private String errorMessage;
+
+    @Column(name = "scheduled_execution_state", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private ScheduledExecutionStatus scheduledExecutionStatus;
 
 }

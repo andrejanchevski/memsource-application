@@ -21,3 +21,6 @@ sample:
 application:
   authentication:
     jwtsecret: memsourcesecret
+
+scheduled:
+  cron_expression: '0 0/5 * * * ?'
