@@ -40,18 +40,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CustomAuthenticationFilter customAuthenticationFilter =
+                new CustomAuthenticationFilter(authenticationManagerBean(), jsonWebTokenUtils, userMapper);
+        customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**").permitAll();
+        http.authorizeRequests().anyRequest().authenticated();
         http.addFilterBefore(new ExceptionHandlerFilter(), CustomAuthenticationFilter.class)
                 .addFilterBefore(
                         new MemsourceAuthenticationFilter(projectsHolderClient,
                                 applicationEventPublisher,
                                 userMapper),
                         CustomAuthenticationFilter.class)
-                .addFilterAfter(new CustomAuthenticationFilter(authenticationManagerBean(),
-                                jsonWebTokenUtils,
-                                userMapper),
+                .addFilterAfter(customAuthenticationFilter,
                         MemsourceAuthenticationFilter.class);
     }
 

@@ -38,7 +38,7 @@ public class MemsourceAuthenticationFilter extends GenericFilterBean {
                          ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        if (httpServletRequest.getRequestURI().equals("/login")) {
+        if (httpServletRequest.getRequestURI().equals("/api/login")) {
             AuthenticateUserRequest authenticateUserRequest =
                     AuthenticateUserRequest.builder()
                             .userName(servletRequest.getParameter("username"))
