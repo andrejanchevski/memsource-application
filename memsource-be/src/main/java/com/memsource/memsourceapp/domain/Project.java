@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "projects")
@@ -30,8 +32,10 @@ public class Project {
     @Column(name = "source_language", nullable = false)
     private String sourceLanguage;
 
-    @Column(name = "target_language", nullable = false)
-    private String targetLanguage;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "projects_target_languages",
+    joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "target_language_id"))
+    private List<TargetLanguage> targetLanguages = new ArrayList<>();
 
     @Column(name = "project_status", nullable = false)
     @Enumerated(EnumType.ORDINAL)
