@@ -21,7 +21,7 @@ public class ScheduledExecutionServiceImpl implements ScheduledExecutionService 
             Boolean isStarted, Boolean isCompleted, String errorMessage,
             ScheduledExecutionStatus scheduledExecutionStatus) {
         return scheduledExecutionRepository.save(ScheduledExecution.builder()
-                        .dateFinished(dateStarted)
+                        .dateStarted(dateStarted)
                         .dateFinished(dateFinished)
                         .isStarted(isStarted)
                         .isCompleted(isCompleted)

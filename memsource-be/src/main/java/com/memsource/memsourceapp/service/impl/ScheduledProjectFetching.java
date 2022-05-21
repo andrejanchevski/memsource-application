@@ -28,7 +28,7 @@ public class ScheduledProjectFetching {
         scheduledExecutionService.save(startedExecutionDate, null, true,
                 false, null, ScheduledExecutionStatus.STARTED);
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("memsource_application_token.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("memsource_application_token"));
             projectService.fetchLatestProjects(reader.readLine().trim());
             scheduledExecutionService.save(startedExecutionDate, ZonedDateTime.now(), true, true,
                     null, ScheduledExecutionStatus.FINISHED);

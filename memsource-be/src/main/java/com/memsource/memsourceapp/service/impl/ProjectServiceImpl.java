@@ -26,15 +26,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectsHolderClient projectsHolderClient;
     private final ProjectRepository projectRepository;
-    private final JsonWebTokenUtils jsonWebTokenUtils;
-
     private final TargetLanguageRepository targetLanguageRepository;
 
     @Override
     @Transactional
-    public List<Project> fetchLatestProjects(String authorizationHeader) {
-        DecodedJWT decodedJWT = jsonWebTokenUtils.decodedJWT(authorizationHeader);
-        String apiClientAuthenticationToken = decodedJWT.getClaim("memsourceApiToken").asString();
+    public List<Project> fetchLatestProjects(String apiClientAuthenticationToken) {
         ResponseEntity<FetchedProjectsPageResponse> fetchedProjectsResponseEntity =
                 projectsHolderClient.getCreatedProjects(String.format("ApiToken %s", apiClientAuthenticationToken));
         return Objects.requireNonNull(fetchedProjectsResponseEntity.getBody()).getContent().stream()
