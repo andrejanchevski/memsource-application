@@ -1,7 +1,12 @@
 package com.memsource.memsourceapp.security;
 
+import com.memsource.memsourceapp.http_client.ProjectsHolderClient;
+import com.memsource.memsourceapp.mapper.UserMapper;
 import com.memsource.memsourceapp.security.filter.CustomAuthenticationFilter;
+import com.memsource.memsourceapp.security.filter.ExceptionHandlerFilter;
+import com.memsource.memsourceapp.security.filter.MemsourceAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +24,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final ProjectsHolderClient projectsHolderClient;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    private final UserMapper userMapper;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
@@ -29,6 +40,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().anyRequest().permitAll();
+        http.addFilterBefore(new ExceptionHandlerFilter(), CustomAuthenticationFilter.class)
+                .addFilterBefore(
+                        new MemsourceAuthenticationFilter(projectsHolderClient,
+                                applicationEventPublisher,
+                                userMapper),
+                        CustomAuthenticationFilter.class);
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
     }
 
@@ -37,4 +54,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception{
         return super.authenticationManagerBean();
     }
+
+
 }
