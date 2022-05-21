@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class FetchedProjectsPageResponse {
     private Integer pageNumber;
-    private List<FetchedProjectsPageResponse> content = new ArrayList<>();
+    private List<FetchedProjectResponse> content = new ArrayList<>();
     private Integer numberOfElements;
     private Integer totalElements;
     private Integer pageSize;

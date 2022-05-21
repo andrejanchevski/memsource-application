@@ -53,11 +53,11 @@ public class MemsourceAuthenticationFilter extends GenericFilterBean {
                 try{
                     UserResponse userResponse = userMapper
                             .findUserByUserName(responseObject.getBody().getUser().getUserName());
-                    filterChain.doFilter(servletRequest, servletResponse);
                 }catch (UserNotFoundException userNotFoundException){
                     userMapper.saveUser(responseObject.getBody(), servletRequest.getParameter("password"));
                 }
             }
         }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 }

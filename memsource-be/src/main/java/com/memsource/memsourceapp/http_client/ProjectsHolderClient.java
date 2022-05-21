@@ -3,6 +3,8 @@ package com.memsource.memsourceapp.http_client;
 import com.memsource.memsourceapp.config.ProjectsHolderClientConfiguration;
 import com.memsource.memsourceapp.http_client.request.AuthenticateUserRequest;
 import com.memsource.memsourceapp.http_client.response.AuthenticatedUserLoginResponse;
+import com.memsource.memsourceapp.http_client.response.FetchedProjectResponse;
+import com.memsource.memsourceapp.http_client.response.FetchedProjectsPageResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,7 @@ public interface ProjectsHolderClient {
             @RequestBody AuthenticateUserRequest authenticateUserRequest);
 
     @RequestMapping(method = RequestMethod.GET, value = "/projects", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Object> getCreatedProjects(
+    ResponseEntity<FetchedProjectsPageResponse> getCreatedProjects(
             @RequestHeader(value = "Authorization") String authorizationHeader);
 
 

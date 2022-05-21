@@ -3,6 +3,7 @@ package com.memsource.memsourceapp.security;
 import com.memsource.memsourceapp.http_client.ProjectsHolderClient;
 import com.memsource.memsourceapp.mapper.UserMapper;
 import com.memsource.memsourceapp.security.filter.CustomAuthenticationFilter;
+import com.memsource.memsourceapp.security.filter.CustomAuthorizationFilter;
 import com.memsource.memsourceapp.security.filter.ExceptionHandlerFilter;
 import com.memsource.memsourceapp.security.filter.MemsourceAuthenticationFilter;
 import com.memsource.memsourceapp.util.JsonWebTokenUtils;
@@ -54,7 +55,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                 userMapper),
                         CustomAuthenticationFilter.class)
                 .addFilterAfter(customAuthenticationFilter,
-                        MemsourceAuthenticationFilter.class);
+                        MemsourceAuthenticationFilter.class)
+                .addFilterAfter(new CustomAuthorizationFilter(jsonWebTokenUtils), CustomAuthenticationFilter.class);
     }
 
     @Bean
