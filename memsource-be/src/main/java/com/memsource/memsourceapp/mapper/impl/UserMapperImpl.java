@@ -25,6 +25,7 @@ public class UserMapperImpl implements UserMapper {
                 .userId(user.getId())
                 .userFirstName(user.getName())
                 .userName(user.getUserName())
+                .authenticationToken(user.getActiveAuthenticationToken())
                 .roles(user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                 .build();
     }
@@ -38,6 +39,7 @@ public class UserMapperImpl implements UserMapper {
                 .userId(user.getId())
                 .userFirstName(user.getName())
                 .userName(user.getUserName())
+                .authenticationToken(user.getActiveAuthenticationToken())
                 .roles(user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                 .build();
     }

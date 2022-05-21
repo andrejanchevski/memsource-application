@@ -17,3 +17,7 @@ spring:
 sample:
   client:
     url: https://cloud.memsource.com/web/api2/v1
+
+application:
+  authentication:
+    jwtsecret: memsourcesecret

@@ -17,4 +17,5 @@ public class UserResponse {
     private String userFirstName;
     private String userName;
     private List<String> roles = new ArrayList<>();
+    private String authenticationToken;
 }

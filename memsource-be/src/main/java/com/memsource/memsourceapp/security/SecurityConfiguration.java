@@ -5,6 +5,7 @@ import com.memsource.memsourceapp.mapper.UserMapper;
 import com.memsource.memsourceapp.security.filter.CustomAuthenticationFilter;
 import com.memsource.memsourceapp.security.filter.ExceptionHandlerFilter;
 import com.memsource.memsourceapp.security.filter.MemsourceAuthenticationFilter;
+import com.memsource.memsourceapp.util.JsonWebTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
+    private final JsonWebTokenUtils jsonWebTokenUtils;
+
     private final UserMapper userMapper;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -45,8 +48,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         new MemsourceAuthenticationFilter(projectsHolderClient,
                                 applicationEventPublisher,
                                 userMapper),
-                        CustomAuthenticationFilter.class);
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+                        CustomAuthenticationFilter.class)
+                .addFilterAfter(new CustomAuthenticationFilter(authenticationManagerBean(),
+                                jsonWebTokenUtils,
+                                userMapper),
+                        MemsourceAuthenticationFilter.class);
     }
 
     @Bean
