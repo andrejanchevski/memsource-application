@@ -1,8 +1,11 @@
 package com.memsource.memsourceapp.api;
 
+import com.memsource.memsourceapp.domain.request.ProjectsPagedRequest;
+import com.memsource.memsourceapp.domain.response.ProjectPagedResponse;
 import com.memsource.memsourceapp.domain.response.ProjectResponse;
 import com.memsource.memsourceapp.mapper.ProjectMapper;
-import lombok.RequiredArgsConstructor;
+import com.memsource.memsourceapp.templates.PagedEntityControllerTemplate;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -13,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/projects")
-public class ProjectController {
+public class ProjectController implements PagedEntityControllerTemplate<ProjectsPagedRequest, ProjectPagedResponse> {
 
     private final ProjectMapper projectMapper;
 
@@ -27,4 +30,9 @@ public class ProjectController {
         return projectMapper.triggerProjectsFetching(authorizationHeader);
     }
 
+    @Override
+    @GetMapping("/all")
+    public Page<ProjectPagedResponse> findAllPageable(ProjectsPagedRequest projectsPagedRequest) {
+        return projectMapper.findAllPageable(projectsPagedRequest);
+    }
 }
