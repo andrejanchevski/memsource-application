@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
