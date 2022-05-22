@@ -33,3 +33,4 @@ build/
 .vscode/
 
 memsource_application_token
+spring.log

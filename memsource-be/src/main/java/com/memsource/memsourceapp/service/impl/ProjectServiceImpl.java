@@ -12,6 +12,7 @@ import com.memsource.memsourceapp.repository.TargetLanguageRepository;
 import com.memsource.memsourceapp.service.ProjectService;
 import com.memsource.memsourceapp.templates.QueryTemplate;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectsHolderClient projectsHolderClient;
@@ -40,8 +42,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public List<Project> fetchLatestProjects(String apiClientAuthenticationToken) {
+        log.info(String.format("Starting to fetch projects from External API at %s", ZonedDateTime.now()));
         ResponseEntity<FetchedProjectsPageResponse> fetchedProjectsResponseEntity =
                 projectsHolderClient.getCreatedProjects(String.format("ApiToken %s", apiClientAuthenticationToken));
+        log.info(String.format("Objects fetched from External API at %s", ZonedDateTime.now()));
         return Objects.requireNonNull(fetchedProjectsResponseEntity.getBody()).getContent().stream()
                 .filter(projectResponse -> projectRepository.findByExternalId(projectResponse.getId()).isEmpty())
                 .map(this::saveProject)
@@ -50,6 +54,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project saveProject(FetchedProjectResponse projectDTO) {
+        log.info(String.format("Creating project with data %s", projectDTO));
         List<TargetLanguage> targetLanguages = projectDTO.getTargetLangs()
                 .stream()
                 .filter(targetLang -> targetLanguageRepository.findByName(targetLang).isEmpty())
@@ -70,6 +75,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Page<Project> findAllProjectsPageable(PagedProjectsRequestDTO pagedProjectsRequestDTO) {
+        log.info(String.format("Started fetching projects with filters %s", pagedProjectsRequestDTO));
         String sortProp = "dateCreated";
         Sort.Direction sortDirection = Sort.Direction.DESC;
         if(pagedProjectsRequestDTO.getSortDirection() != null){
